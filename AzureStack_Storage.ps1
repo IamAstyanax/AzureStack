@@ -41,16 +41,16 @@ Invoke-Command ($ServerList) {
 Test-Cluster –Node $servers –Include "Storage Spaces Direct", "Inventory", "Network", "System Configuration"
 
 #Create the cluster with a unique name and IP
-New-Cluster –Name storagespaces –Node <lucy,linus,pigpen> –NoStorage -staticaddress $addressingforazurecluster
+New-Cluster –Name storagespaces –Node <$nodes> –NoStorage -staticaddress $addressingforazurecluster
 
 #Create the volume within the storage pool
 New-Volume -FriendlyName $volume -FileSystem CSVFS_ReFS -StoragePoolFriendlyName S2D* -Size 14.53TB
 
 #Create cluster failure domain
 
-New-ClusterFaultDomain -Name N4 -Type Rack -Location "Kearney Datacenter"
-New-ClusterFaultDomain -Name N2 -Type Rack -Location "Kearney Datacenter"
-New-ClusterFaultDomain -Name N1 -Type Rack -Location "Kearney Datacenter"
+New-ClusterFaultDomain -Name N4 -Type Rack -Location "$location"
+New-ClusterFaultDomain -Name N2 -Type Rack -Location "$location"
+New-ClusterFaultDomain -Name N1 -Type Rack -Location "$location"
 # set rules for failure domain
 Set-ClusterFaultDomain -Name $node -Parent N2
 Set-ClusterFaultDomain -Name $node -Parent N1
